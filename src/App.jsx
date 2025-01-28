@@ -52,8 +52,8 @@ const App = () => {
   return (
     <div>
       <input typeof="text" placeholder="set your message" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
-      <button onClick={setUserMessage}>set message</button>
-      <button onClick={getUserMessage} >Get message</button>
+      <button onClick={setUserMessage}>Deposit</button>
+      <button onClick={getUserMessage} >Withdraw</button>
       <p ><strong>Retrieved Message:</strong>  {retrievedMessage}</p>
     </div>
   );
