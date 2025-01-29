@@ -21,7 +21,7 @@ div {
   text-align: center;
 }
 
-/* Input field */
+/* Input fields */
 input[type="text"] {
   width: 100%;
   padding: 0.75rem;
@@ -59,7 +59,7 @@ button:active {
   transform: translateY(0);
 }
 
-/* Retrieved message */
+/* Contract balance display */
 p {
   margin-top: 1.5rem;
   font-size: 1.1rem;
@@ -70,17 +70,22 @@ strong {
   color: #6200ea;
 }
 
-/* Toast notifications (if you add them) */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #333;
-  color: white;
-  padding: 1rem;
+/* Toastify notifications customization */
+.Toastify__toast-container {
+  font-size: 0.9rem;
+}
+
+.Toastify__toast--success {
+  background-color: #4caf50; /* Green for success */
+}
+
+.Toastify__toast--error {
+  background-color: #f44336; /* Red for errors */
+}
+
+.Toastify__toast {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
 }
 
 /* Responsive design */
