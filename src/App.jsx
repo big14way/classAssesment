@@ -66,9 +66,15 @@ const App = () => {
       try {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const contract = new ethers.Contract(contractAddress, abi, provider);
+
+        // Call the getBalance function
         const balance = await contract.getBalance();
-        setBalance(ethers.formatEther(balance));
-        toast.success("Balance retrieved: " + ethers.formatEther(balance) + " ETH");
+        console.log("Raw balance:", balance); // Debugging: Log raw balance
+
+        // Convert balance from wei to ether
+        const balanceInEther = ethers.formatEther(balance);
+        setBalance(balanceInEther);
+        toast.success("Balance retrieved: " + balanceInEther + " ETH");
       } catch (error) {
         toast.error("Failed to retrieve balance: " + error.message);
       }
