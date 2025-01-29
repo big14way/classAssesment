@@ -14,6 +14,7 @@ const App = () => {
   async function requestAccounts() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
   }
+
   async function depositFunds() {
     if (typeof window.ethereum !== "undefined") {
       await requestAccounts();
@@ -21,7 +22,9 @@ const App = () => {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddress, abi, signer);
-        const tx = await contract.deposit(depositAmount);
+
+        // Convert deposit amount to wei
+        const tx = await contract.deposit(ethers.parseEther(depositAmount), { gasLimit: 300000 });
         await tx.wait();
         toast.success("Deposit successful!"); // Show success toast
       } catch (error) {
@@ -31,14 +34,23 @@ const App = () => {
       toast.error("Ethereum wallet is not detected");
     }
   }
+
   async function withdrawFunds() {
     if (typeof window.ethereum !== "undefined") {
       await requestAccounts();
       try {
+        // Validate withdrawal amount
+        if (!withdrawAmount || isNaN(withdrawAmount)) {
+          toast.error("Please enter a valid withdrawal amount");
+          return;
+        }
+
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddress, abi, signer);
-        const tx = await contract.withdraw(withdrawAmount);
+
+        // Convert withdrawal amount to wei
+        const tx = await contract.withdraw(ethers.parseEther(withdrawAmount), { gasLimit: 300000 });
         await tx.wait();
         toast.success("Withdrawal successful!"); // Show success toast
       } catch (error) {
@@ -56,9 +68,7 @@ const App = () => {
         const contract = new ethers.Contract(contractAddress, abi, provider);
         const balance = await contract.getBalance();
         setBalance(ethers.formatEther(balance));
-        toast.success(
-          "Balance retrieved: " + ethers.formatEther(balance) + " ETH"
-        );
+        toast.success("Balance retrieved: " + ethers.formatEther(balance) + " ETH");
       } catch (error) {
         toast.error("Failed to retrieve balance: " + error.message);
       }
@@ -70,13 +80,13 @@ const App = () => {
   return (
     <div>
       <input
-        typeof="text"
+        type="text" // Corrected from typeof="text"
         placeholder="Enter deposit amount (ETH)"
         value={depositAmount}
         onChange={(e) => setDepositAmount(e.target.value)}
       />
       <input
-        typeof="text"
+        type="text" // Corrected from typeof="text"
         placeholder="Enter withdrawal amount (ETH)"
         value={withdrawAmount}
         onChange={(e) => setWithdrawAmount(e.target.value)}
@@ -90,7 +100,6 @@ const App = () => {
       </p>
       <ToastContainer /> {/* Container for the toasts */}
     </div>
-    
   );
 };
 
